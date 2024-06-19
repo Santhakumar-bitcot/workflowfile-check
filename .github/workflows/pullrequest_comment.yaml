@@ -1,5 +1,4 @@
-name: Your Workflow Name
-
+name: pullrequest-file
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -12,20 +11,17 @@ jobs:
       - name: Your First Step
         run: echo "This is your first step"
 
+      # Add more steps as needed
+
+      - name: Install octokit CLI
+        run: npm install -g @octokit/cli
+
       - name: Comment on PR with status
         if: always()
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { owner, repo } = context.repo;
-            const prNumber = context.payload.pull_request.number;
-            const message = 'Workflow completed :white_check_mark:';
-            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-
-            await octokit.issues.createComment({
-              owner,
-              repo,
-              issue_number: prNumber,
-              body: message
-            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          octokit issues create-comment \
+            --repo $GITHUB_REPOSITORY \
+            --issue ${{ github.event.pull_request.number }} \
+            --body "Workflow completed :white_check_mark:"
