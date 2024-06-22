@@ -46,8 +46,4 @@ jobs:
       - name: Display Excel file content
         run: |
           pip install pandas openpyxl
-          python -c "
-            import pandas as pd
-            df = pd.read_excel('./downloaded/output.xlsx')
-            print(df)
-            "
+          python -c "import pandas as pd; df = pd.read_excel('./downloaded/output.xlsx'); print(df)"
