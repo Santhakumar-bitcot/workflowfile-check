@@ -28,22 +28,3 @@ jobs:
         with:
           name: excel-file
           path: output.xlsx
-
-  download_and_display_excel:
-    runs-on: ubuntu-latest
-    needs: generate_excel
-
-    steps:
-      - name: Download Excel file artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: excel-file
-          path: ./downloaded
-
-      - name: List downloaded files
-        run: ls -l ./downloaded
-
-      - name: Display Excel file content
-        run: |
-          pip install pandas openpyxl
-          python -c "import pandas as pd; df = pd.read_excel('./downloaded/output.xlsx'); print(df)"
